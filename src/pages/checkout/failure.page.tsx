@@ -17,7 +17,7 @@ export default function CheckoutFailurePage() {
           un problema con la conexión. Intenta nuevamente.
         </Typography>
         <Stack direction="row" spacing={2}>
-          <Button variant="outlined" onClick={() => navigate("/carrito")}>
+          <Button variant="outlined" onClick={() => navigate("/cart")}>
             Volver al carrito
           </Button>
           <Button variant="contained" color="error" onClick={() => navigate("/home")}>
