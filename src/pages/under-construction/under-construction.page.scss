@@ -1,0 +1,32 @@
+.uc-wrapper {
+  padding-block: clamp(2rem, 5vw, 4rem);
+}
+
+.uc-brand {
+  font-weight: 600;
+  color: #8aa6ff;
+  letter-spacing: .2px;
+}
+
+.uc-kicker {
+  margin: 0;
+  color: #5da8ff;             
+  font-weight: 600;
+  line-height: 1;
+}
+
+.uc-title {
+  margin: .25rem 0 0;
+  font-weight: 700;           
+  line-height: 1.1;
+}
+
+.uc-cta {
+  padding-inline: 1.25rem;
+  border-radius: 999px;
+}
+
+.uc-hero {
+  max-width: 520px;            
+  filter: drop-shadow(0 10px 25px rgba(0,0,0,.1));
+}

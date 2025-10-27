@@ -1,0 +1,37 @@
+.custom-navbar {
+  background-color: #F5F6FF !important;
+  min-height: 4.5rem;
+  font-family: 'Poppins', sans-serif;
+
+  .navbar-brand {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #0A0A23 !important;
+  }
+
+  .navbar-nav {
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #0A0A23 !important;
+    transition: color 0.2s ease;
+
+    &.active {
+      font-weight: 600;
+      color: #000 !important;
+    }
+
+    &:hover {
+      color: #1a1a40 !important;
+    }
+  }
+}
+
+.logo-icon {
+  width: 200px;
+  height: 100px;
+  object-fit: contain;
+}
