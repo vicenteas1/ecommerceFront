@@ -1,7 +1,7 @@
 import axios from "axios";
 import { environment } from "../../config/environment/environment";
 
-const baseURL = environment.api?.url || import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+const baseURL = environment.api?.url || import.meta.env.VITE_API_BASE_URL;
 
 export const axiosClient = axios.create({
   baseURL,

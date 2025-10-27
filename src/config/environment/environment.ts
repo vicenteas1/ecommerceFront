@@ -5,7 +5,7 @@ export const environment = {
     certification: false,
   },
   api: {
-    url: import.meta.env.VITE_API_URL || "http://localhost:3000",
+    url: import.meta.env.VITE_API_URL || "https://ecommerceback-6n3o.onrender.com",
   },
   login: {
     url:
