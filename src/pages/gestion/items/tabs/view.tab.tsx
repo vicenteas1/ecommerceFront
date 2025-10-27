@@ -8,7 +8,7 @@ import { getCategories } from "../../../../services/categories/categories.servic
 import { getTypes } from "../../../../services/type/type.service";
 import { getItems, type Item } from "../../../../services/item/item.service";
 import type { TypeItem } from "../../../../models/services/item/item.model";
-import type { CategoryItem, CategoryLite } from "../../../../models/services/categories/categories.model";
+import type { CategoryLite } from "../../../../models/services/categories/categories.model";
 
 export default function ViewItemsTab() {
   const [items, setItems] = useState<Item[]>([]);
