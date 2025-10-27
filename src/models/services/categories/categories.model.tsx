@@ -16,7 +16,6 @@ export interface Category {
   createdBy?: string;
   updatedBy?: string;
 }
-
 export type CategoryItem = {
   _id: string;
   nombre: string;
@@ -31,3 +30,4 @@ type CategoryListData = Category[] | { items: Category[] };
 export type CategoryListResponse   = ApiResponse<CategoryListData>;
 export type CategorySingleResponse = ApiResponse<Category>;
 export type DeleteEnvelope         = ApiResponse<{ ok?: boolean; deleted?: boolean }>;
+export type CategoryLite = { _id: string; nombre: string; slug: string };

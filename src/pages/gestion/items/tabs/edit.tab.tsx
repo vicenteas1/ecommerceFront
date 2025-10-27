@@ -7,9 +7,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { getItems, updateItem, type Item } from "../../../../services/item/item.service";
 import { getCategories, getTypes } from "../../../../services/categories/categories.service";
-
-type TypeItem = { _id: string; nombre: string; slug: string };
-type CategoryItem = { _id: string; nombre: string; slug: string; type: { _id: string } | string };
+import type { TypeItem } from "../../../../models/services/item/item.model";
+import type { CategoryItem } from "../../../../models/services/categories/categories.model";
 
 export default function EditItemTab() {
   const [items, setItems] = useState<Item[]>([]);
@@ -45,7 +44,12 @@ export default function EditItemTab() {
     setError(null);
     try {
       const list = await getItems();
-      setItems(list);
+
+      setItems(list.map((it: any) => ({
+        ...it,
+        type: typeof it.type === "string" ? it.type : it?.type?._id ?? "",
+        category: typeof it.category === "string" ? it.category : it?.category?._id ?? "",
+      })));
     } catch (err: any) {
       setError(err?.message ?? "Error cargando ítems");
     } finally {
@@ -72,8 +76,14 @@ export default function EditItemTab() {
 
   useEffect(() => {
     (async () => {
-      const typeId = editing.type as string | undefined;
-      if (!open || !typeId) { setCategories([]); return; }
+      if (!open) { setCategories([]); return; }
+
+      const typeId = typeof (editing as any).type === "string"
+        ? (editing as any).type
+        : (editing as any)?.type?._id ?? "";
+
+      if (!typeId) { setCategories([]); return; }
+
       setCatsLoading(true);
       try {
         const cats: any[] = await getCategories({ typeId });
@@ -90,13 +100,21 @@ export default function EditItemTab() {
 
   const handleOpen = async (it: Item) => {
     setSaveError(null);
+    const typeId = typeof (it as any).type === "string" ? (it as any).type : (it as any)?.type?._id ?? "";
+    const categoryId = typeof (it as any).category === "string" ? (it as any).category : (it as any)?.category?._id ?? "";
+
     setEditing({
-      id: it.id, nombre: it.nombre, descripcion: it.descripcion,
-      precio: it.precio, type: it.type, category: it.category,
+      id: it.id,
+      nombre: it.nombre,
+      descripcion: it.descripcion,
+      precio: it.precio,
+      type: typeId,
+      category: categoryId,
     });
+
     try {
       setCatsLoading(true);
-      const cats: any[] = await getCategories({ typeId: it.type });
+      const cats: any[] = await getCategories({ typeId });
       setCategories((cats ?? []).map(c => ({
         _id: c._id ?? c.id, nombre: c.nombre, slug: c.slug, type: c.type,
       })));
@@ -117,8 +135,8 @@ export default function EditItemTab() {
         nombre: editing.nombre,
         descripcion: editing.descripcion,
         precio: editing.precio !== undefined ? Number(editing.precio) : undefined,
-        type: editing.type as string | undefined,
-        category: editing.category as string | undefined,
+        type: (editing.type as string) || undefined,         
+        category: (editing.category as string) || undefined,
       });
       setOpen(false);
       await load();
@@ -152,8 +170,20 @@ export default function EditItemTab() {
               <TableCell>{it.nombre}</TableCell>
               <TableCell style={{ maxWidth: 900 }}>{it.descripcion}</TableCell>
               <TableCell>${it.precio.toLocaleString("es-CL")}</TableCell>
-              <TableCell>{typeNameById.get(it.type) ?? it.type}</TableCell>
-              <TableCell>{categoryNameById.get(it.category) ?? it.category}</TableCell>
+              <TableCell>
+                {typeNameById.get(
+                  typeof (it as any).type === "string" ? (it as any).type : (it as any)?.type?._id ?? ""
+                ) ?? (
+                  typeof (it as any).type === "string" ? (it as any).type : (it as any)?.type?.nombre ?? ""
+                )}
+              </TableCell>
+              <TableCell>
+                {categoryNameById.get(
+                  typeof (it as any).category === "string" ? (it as any).category : (it as any)?.category?._id ?? ""
+                ) ?? (
+                  typeof (it as any).category === "string" ? (it as any).category : (it as any)?.category?.nombre ?? ""
+                )}
+              </TableCell>              
               <TableCell align="center">
                 <IconButton color="primary" onClick={() => handleOpen(it)} aria-label={`Editar ${it.nombre}`}>
                   <EditIcon />

@@ -6,9 +6,8 @@ import {
 import { getCategories } from "../../../../services/categories/categories.service";
 import { getTypes } from "../../../../services/type/type.service";
 import { createItem } from "../../../../services/item/item.service";
-
-type TypeItem = { _id: string; nombre: string; slug: string };
-type CategoryItem = { _id: string; nombre: string; slug: string; type: { _id: string; slug: string } | string };
+import type { TypeItem } from "../../../../models/services/item/item.model";
+import type { CategoryItem } from "../../../../models/services/categories/categories.model";
 
 export default function CreateItemTab() {
   const [nombre, setNombre] = useState("");

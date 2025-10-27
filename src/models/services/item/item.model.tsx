@@ -20,3 +20,9 @@ export interface ProductResponse {
     limit: number;
   };
 }
+
+export type TypeItem = { 
+  _id: string;
+  nombre: string;
+  slug: string
+};

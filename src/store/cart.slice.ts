@@ -1,4 +1,3 @@
-// src/store/cart.slice.ts
 import { createSlice, type PayloadAction, createSelector } from "@reduxjs/toolkit";
 
 export type CartItem = {
@@ -6,14 +5,13 @@ export type CartItem = {
   nombre: string;
   precio: number;
   qty: number;
-  img?: string | null; // opcional
+  img?: string | null;
 };
 
 export type CartState = { items: CartItem[] };
 
 const KEY = "cart_v1";
 
-/* Load / Save con try/catch */
 const loadState = (): CartState => {
   try {
     const raw = localStorage.getItem(KEY);
@@ -26,7 +24,6 @@ const saveState = (state: CartState) => {
   try {
     localStorage.setItem(KEY, JSON.stringify(state));
   } catch {
-    // no-op
   }
 };
 
@@ -64,9 +61,8 @@ const cartSlice = createSlice({
 });
 
 export const { addItem, removeItem, updateQty, clearCart } = cartSlice.actions;
-export default cartSlice.reducer; // ⬅️ export default para montar fácil en el store
+export default cartSlice.reducer;
 
-/* Selectores */
 export const selectCartItems = (s: { cart: CartState }) => s.cart.items;
 export const selectCartCount = createSelector(selectCartItems, (items) =>
   items.reduce((acc, it) => acc + it.qty, 0)
@@ -75,7 +71,6 @@ export const selectCartTotal = createSelector(selectCartItems, (items) =>
   items.reduce((acc, it) => acc + it.precio * it.qty, 0)
 );
 
-/* Middleware de persistencia (opcional si ya guardas en reducers) */
 export const cartPersistence = (storeAPI: any) => (next: any) => (action: any) => {
   const result = next(action);
   const state: { cart: CartState } = storeAPI.getState?.() ?? { cart: { items: [] } };

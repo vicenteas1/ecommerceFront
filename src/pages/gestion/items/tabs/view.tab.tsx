@@ -7,9 +7,8 @@ import {
 import { getCategories } from "../../../../services/categories/categories.service";
 import { getTypes } from "../../../../services/type/type.service";
 import { getItems, type Item } from "../../../../services/item/item.service";
-
-type TypeItem = { _id: string; nombre: string; slug: string };
-type CategoryItem = { _id: string; nombre: string; slug: string };
+import type { TypeItem } from "../../../../models/services/item/item.model";
+import type { CategoryItem, CategoryLite } from "../../../../models/services/categories/categories.model";
 
 export default function ViewItemsTab() {
   const [items, setItems] = useState<Item[]>([]);
@@ -17,7 +16,7 @@ export default function ViewItemsTab() {
   const [error, setError] = useState<string | null>(null);
 
   const [types, setTypes] = useState<TypeItem[]>([]);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [categories, setCategories] = useState<CategoryLite[]>([]);
   const [metaLoading, setMetaLoading] = useState(true);
 
   const typeNameById = useMemo(() => {
@@ -51,7 +50,11 @@ export default function ViewItemsTab() {
       try {
         const [tps, cats] = await Promise.all([getTypes(), getCategories()]);
         setTypes((tps ?? []).map((t: any) => ({ _id: t._id ?? t.id, nombre: t.nombre, slug: t.slug })));
-        setCategories((cats ?? []).map((c: any) => ({ _id: c._id ?? c.id, nombre: c.nombre, slug: c.slug })));
+        setCategories((cats ?? []).map((c: any) => ({
+          _id: c._id ?? c.id,
+          nombre: c.nombre,
+          slug: c.slug,
+        })));
       } catch (err) {
         console.error("Error cargando meta:", err);
       } finally {
@@ -82,8 +85,15 @@ export default function ViewItemsTab() {
               <TableCell>{it.nombre}</TableCell>
               <TableCell>{it.descripcion}</TableCell>
               <TableCell>${it.precio.toLocaleString("es-CL")}</TableCell>
-              <TableCell>{typeNameById.get(it.type) ?? it.type}</TableCell>
-              <TableCell>{categoryNameById.get(it.category) ?? it.category}</TableCell>
+              <TableCell>
+                {typeNameById.get(typeof (it as any).type === "string" ? (it as any).type : (it as any)?.type?._id ?? "")
+                ?? (typeof (it as any).type === "string" ? (it as any).type : (it as any)?.type?.nombre ?? "")}
+              </TableCell>
+
+              <TableCell>
+                {categoryNameById.get(typeof (it as any).category === "string" ? (it as any).category : (it as any)?.category?._id ?? "")
+                ?? (typeof (it as any).category === "string" ? (it as any).category : (it as any)?.category?.nombre ?? "")}
+              </TableCell>
             </TableRow>
           ))}
           {items.length === 0 && (
