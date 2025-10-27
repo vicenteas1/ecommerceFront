@@ -77,9 +77,16 @@ export default function ServiciosDetallePage() {
         <MUILink underline="hover" color="inherit" sx={{ cursor: "pointer" }} onClick={() => navigate("/")}>
           Inicio
         </MUILink>
-        <MUILink underline="hover" color="inherit" sx={{ cursor: "pointer" }} onClick={() => navigate("/servicios")}>
-          Servicios
-        </MUILink>
+          {tipoNombre == 'servicios' && 
+            <MUILink underline="hover" color="inherit" sx={{ cursor: "pointer" }} onClick={() => navigate("/servicios")}>
+            Servicios
+            </MUILink>
+          }
+          {tipoNombre == 'categoria' && 
+            <MUILink underline="hover" color="inherit" sx={{ cursor: "pointer" }} onClick={() => navigate("/categorias")}>
+            Categoria
+            </MUILink>
+          }
         {tipoNombre && <Typography color="text.primary" component="span">{tipoNombre}</Typography>}
         {categoriaNombre && <Typography color="text.primary" component="span">{categoriaNombre}</Typography>}
       </Breadcrumbs>
