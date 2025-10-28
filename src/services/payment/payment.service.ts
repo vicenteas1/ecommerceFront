@@ -7,7 +7,7 @@ export async function createMpPreference(
   items: Array<{ title: string; quantity: number; unit_price: number }>,
   payer?: { email?: string; name?: string; surname?: string }
 ): Promise<CreatePreferenceResult> {
-  const { data } = await axiosClient.post("/payments/create-preference", { items, payer });
+  const { data } = await axiosClient.post("/api/payments/create-preference", { items, payer });
   const id = data?.data?.id as string | undefined;
   if (!id) throw new Error(data?.message || "No se pudo crear la preferencia.");
   return { id, payment: data?.data?.payment };
