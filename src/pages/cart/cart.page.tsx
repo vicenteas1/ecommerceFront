@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Wallet } from "@mercadopago/sdk-react";
 import {
   Box, Button, Container, Divider, Grid, IconButton, Stack, TextField, Typography
