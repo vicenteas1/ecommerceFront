@@ -1,25 +1,16 @@
 import type { ApiResponse } from "../../models/apiResponse/apiResponse.model";
-import type { CreatePreferenceResponse, ListPaymentsResult, MPItem, MPPayer, PaymentRecord } from "../../models/services/payment/payment.model";
+import type { ListPaymentsResult, PaymentRecord } from "../../models/services/payment/payment.model";
 import { axiosClient } from "../../utils/interceptor/interceptor";
 
+type CreatePreferenceResult = { id: string; payment?: unknown };
 export async function createMpPreference(
-  items: MPItem[],
-  payer?: MPPayer
-): Promise<CreatePreferenceResponse> {
-  if (!Array.isArray(items) || items.length === 0) {
-    throw new Error("No hay items para procesar el pago.");
-  }
-
-  const { data } = await axiosClient.post<ApiResponse<CreatePreferenceResponse>>(
-    "/api/payments/create-preference",
-    { items, payer }
-  );
-
-  if (!data?.data?.id || !data?.data?.init_point) {
-    throw new Error(data?.message || "No se pudo crear la preferencia de pago.");
-  }
-
-  return data.data;
+  items: Array<{ title: string; quantity: number; unit_price: number }>,
+  payer?: { email?: string; name?: string; surname?: string }
+): Promise<CreatePreferenceResult> {
+  const { data } = await axiosClient.post("/payments/create-preference", { items, payer });
+  const id = data?.data?.id as string | undefined;
+  if (!id) throw new Error(data?.message || "No se pudo crear la preferencia.");
+  return { id, payment: data?.data?.payment };
 }
 
 export async function listPayments(params?: {

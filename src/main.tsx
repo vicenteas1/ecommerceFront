@@ -9,6 +9,9 @@ import "./main.scss";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { initMercadoPago } from "@mercadopago/sdk-react";
+
+initMercadoPago(import.meta.env.VITE_MP_PUBLIC_KEY as string, { locale: "es-CL" });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
